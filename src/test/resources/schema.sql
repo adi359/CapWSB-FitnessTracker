@@ -1,0 +1,14 @@
+CREATE TABLE users (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  email VARCHAR(255)
+);
+
+CREATE TABLE health_metrics (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  user_id BIGINT
+);
+
+CREATE TABLE statistics (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  user_id BIGINT
+);
