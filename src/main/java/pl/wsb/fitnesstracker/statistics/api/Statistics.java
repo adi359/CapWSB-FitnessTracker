@@ -19,6 +19,9 @@ public class Statistics {
     @Nullable
     private Long id;
 
+    @Nullable
+    private Long user_id;
+
     @Column(name = "total_trainings", nullable = false)
     private int totalTrainings;
 
