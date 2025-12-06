@@ -15,6 +15,7 @@ import pl.wsb.fitnesstracker.user.api.User;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,14 +48,26 @@ class InitialDataLoader {
         List<User> sampleUserList = generateSampleUsers();
         List<Training> sampleTrainingList = generateTrainingData(sampleUserList);
 
+        userRepository.findAll().forEach(user -> log.info("User in database: {}", user));
 
         log.info("Finished loading initial data");
     }
 
     private User generateUser(String name, String lastName, int age) {
+        return generateUser(name, lastName, now().minusYears(age));
+    }
+
+    private User generateUser(String name, String lastName, String age) {
+        if ("do zweryfikowania".equals(age)) {
+            return generateUser(name, lastName, now());
+        }
+        return generateUser(name, lastName, Integer.parseInt(age));
+    }
+
+    private User generateUser(String name, String lastName, LocalDate birthdate) {
         User user = new User(name,
                 lastName,
-                now().minusYears(age),
+                birthdate,
                 "%s.%s@domain.com".formatted(name, lastName));
         return userRepository.save(user);
     }
@@ -72,6 +85,7 @@ class InitialDataLoader {
         users.add(generateUser("Noah", "Miller", 39));
         users.add(generateUser("Grace", "Anderson", 33));
         users.add(generateUser("Oliver", "Swift", 29));
+        users.add(generateUser("Mikołaj", "Święty", "do zweryfikowania"));
 
         return users;
     }
